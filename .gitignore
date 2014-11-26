@@ -1,4 +1,4 @@
-ckanext_nhsengland.egg-info/*
+ckanext_mingus.egg-info/*
 *.pyc
 build/*
 dist/*
