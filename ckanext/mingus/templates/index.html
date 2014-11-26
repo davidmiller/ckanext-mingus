@@ -1,0 +1,86 @@
+{% extends "page.html" %}
+
+{% block styles %}
+  {{ super() }}
+  {% resource "mingus/css/lib/bootstrap-3.2.0-dist/css/bootstrap.css" %}
+  {% resource "mingus/js/lib/recline/dist/recline.css" %}
+  {% resource "mingus/js/lib/slickgrid/2.0.1/slick.grid.css" %}
+  {% resource "mingus/mingus.css" %}
+
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+
+{% block head_extras %}
+  {{ super() }}
+    <script type="text/x-template" id="package_list_tpl">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Available Datasets
+        </div>
+        <div class="panel-body">
+
+          <ul class="list-unstyled">
+            <% _.each(packages, function(dataset){ if(!dataset.private && dataset.datastore_resources.length > 0){ %>
+            <li class="dataset">
+              <span class="dataset_title">
+                <%=dataset.title%> (<%= dataset.num_resources %>)
+              </span>
+              <div class="hidden">
+                <p>Resources:</p>
+                <ul>
+
+                  <% _.each(dataset.datastore_resources, function(resource){ %>
+                  <li class="resource">
+                    <button class="btn btn-default insert_resource" 
+                            data-resource-id="<%= resource.id %>" 
+                            data-dataset-id="<%= dataset.id %>">
+                      <i class="fa fa-paste"></i>
+                    </button>
+                    <%= resource.name %>
+                  </li>
+                  <% }); %>
+                </ul>
+              </div>
+            </li>
+            <% }}); %>
+          </ul>
+        </div>
+      </div>
+    </script>
+{% endblock %}
+
+ {% block content %}
+    <div class="container">
+      
+      <div class="row"> <!-- Code Editor -->
+        <div class="col-md-8">
+          <div class="panel panel-default" id="querybuilder">
+            <div class="panel-body">
+              <div id="editor">
+              </div>
+            </div>
+            <div class="panel-footer">
+              <a class="btn btn-success pull-right execute">Execute</a>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-4 package_list">
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-12" id="query_results">
+          <div class="multiview">
+          </div>
+        </div>
+      </div>
+      
+    </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  {% resource "mingus/app" %}
+{% endblock %}
